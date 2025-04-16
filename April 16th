@@ -1,0 +1,71 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Apr 16 17:31:34 2025
+
+@author: thoma
+"""
+
+import numpy as np
+
+#print(random.random())
+x = 10
+time = 1
+
+#L = np.zeros((x,x))
+
+L = np.random.rand(x,x)
+l = len(L)
+p = 0.5
+print(L)
+
+
+for i in range(l):
+    for j in range(l):
+        if L[i][j] > p:
+            L[i][j] = 0
+        else:
+            L[i][j] = 1
+print(L)
+print()
+
+h = int(x/2)
+
+for i in range(x):
+    for j in range(h):
+        if L[i][j] == 1:
+            L[i][j] = 2
+print(L)
+print()
+
+while np.all(L != 3) or np.all(L != 2):
+    
+    for i in range(x):
+        for j in range(x):
+            if L[i][j] == 3:
+                L[i][j] = 0
+            
+            if L[i][j] == 2:
+                L[i][j] = 3
+            
+            if i == x:  # This is a maybe
+                if L[x][j] == 2:
+                    L[x][j] = 3
+                if L[x][j-1] == 1:
+                    L[x][j-1] = 2
+                if L[x][j+1] == 1:
+                    L[x][j+1] = 2
+            
+            if j == x:
+                if L[i][x] == 2:
+                    L[i][x] = 3
+                if L[i-1][x] == 1:
+                    L[i-1][x] = 2
+                if L[i+1][x] == 1:
+                    L[i+1][x] = 2
+    time = time +1
+    print(L)
+    print(time)  #This loop is infinte!!
+            
+
+        
+        
