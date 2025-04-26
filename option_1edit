@@ -1,0 +1,43 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Apr 25 20:24:08 2025
+
+@author: lily
+"""
+
+import fire_functionsedit as ff
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Grid sizes and tree densities
+L_values = [20, 30, 40, 50, 60, 70]  # Grid sizes
+p_values = np.linspace(0, 1, 100)  # Tree density range
+
+for L in L_values:
+    mean_durations = []
+
+    for p in p_values:
+        durations = []
+        for ran in range(10):  # Run 10 simulations for averaging
+            grid = ff.ran_grid(L, p)
+            time, final = ff.Burn(grid, L)
+            durations.append(time)
+
+        average_time = np.mean(durations)
+        mean_durations.append(average_time)
+
+    # Find the peak (maximum average burn time)
+    max_duration = max(mean_durations)
+    peak_p = p_values[mean_durations.index(max_duration)]
+    print(f"L={L} -> Peak at p = {peak_p:.2f}, fire lasted ~{max_duration:.2f} units")
+
+    # Plot the curve for this L
+    plt.plot(p_values, mean_durations, label=f"L={L}")
+
+# Show the final plot
+plt.xlabel("Tree density (p)")
+plt.ylabel("Mean fire duration")
+plt.title("Mean Fire Duration vs Tree Density (p)")
+plt.legend()
+plt.grid(True)
+plt.show()
