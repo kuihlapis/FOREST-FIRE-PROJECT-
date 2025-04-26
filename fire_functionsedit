@@ -1,0 +1,61 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Apr 25 20:21:52 2025
+
+@author: lily
+"""
+
+import numpy as np
+
+# -----------------------------------------------------------------------------
+# Forest generation function
+def ran_grid(x, p):
+    L = np.random.rand(x, x)
+    for i in range(x):
+        for j in range(x):
+            L[i][j] = 1 if L[i][j] < p else 0
+    return L
+
+# -----------------------------------------------------------------------------
+# Fire simulation
+def Burn(L, x):
+    """
+    Spreads fire across a forest grid L of size x by x.
+    1 = tree, 2 = burning tree, 3 = smoldered (just burned), 0 = empty.
+    Fire starts on the left half of the grid.
+    Returns how many rounds fire lasted and final grid.
+    """
+    time = 1
+    h = int(x / 2)
+
+    # Set left half of trees on fire
+    for i in range(x):
+        for j in range(h):
+            if L[i][j] == 1:
+                L[i][j] = 2  # ignite
+
+    # While fire is still burning
+    while np.any(L == 2):
+        new_L = np.copy(L)
+
+        for i in range(x):
+            for j in range(x):
+                if L[i][j] == 2:
+                    # Try to spread fire to neighbors
+                    if i > 0 and L[i-1][j] == 1:
+                        new_L[i-1][j] = 2
+                    if i < x-1 and L[i+1][j] == 1:
+                        new_L[i+1][j] = 2
+                    if j > 0 and L[i][j-1] == 1:
+                        new_L[i][j-1] = 2
+                    if j < x-1 and L[i][j+1] == 1:
+                        new_L[i][j+1] = 2
+
+                    # After spreading, mark the current tree as burned
+                    new_L[i][j] = 3
+
+        L = new_L
+        time += 1  # increase by 1 per round, not per tree
+
+    return time, L
+
