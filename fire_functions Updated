@@ -75,8 +75,7 @@ def Burn(L, x):
             if L[i][j] == 1:
                 L[i][j] = 2
 
-    # This while loop allows for the fire to also spread backwards and upwards,
-    # against the progression of the for loops
+    # The while loop runs as many rounds as needed until no burning trees are detected
     while np.any(L == 2):
         new_L = np.copy(L)
         for j in range(x):
