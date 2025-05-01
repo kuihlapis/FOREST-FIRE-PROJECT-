@@ -28,7 +28,7 @@ for L in L_values:
     # Plot the curve for this L
     plt.plot(p_values, mean_durations, label = f'L = {L}')
 
-# Show the final plot wi
+# Show the final plot with legend, title, grid and labels
 plt.xlabel("Tree density (p)")
 plt.ylabel("Mean fire duration")
 plt.title("Mean Fire Duration vs Tree Density (p)")
